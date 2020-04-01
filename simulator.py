@@ -1,12 +1,13 @@
 import random
 from math import sqrt
+import matplotlib.pyplot as plt
 
 #space of the community
 width = 1000
 height = 1000
 
 #population in the community
-participants = 20000
+participants = 2000
 
 collectionOfParticipants = []
 
@@ -16,10 +17,11 @@ sick = 1
 recovered = 0
 death = 0
 
-spread_radius = 50
-infect_probability = 0.7
-recover_probability = 0.09
-dealth_probability = 0.01
+speed = 10   #normal 10
+spread_radius = 3
+infect_probability = 0.3    #normal 0.7
+recover_probability = 0.009 
+dealth_probability = 0.001 
 
 # Healthy = 0
 # Sick = 1
@@ -47,8 +49,8 @@ class participant:
         self.x = random.uniform(0,width)
         self.y = random.uniform(0,height)
         self.status = 0
-        self.xspeed = random.uniform(-10,10)
-        self.yspeed = random.uniform(-10,10)
+        self.xspeed = random.uniform(speed*-1,speed)
+        self.yspeed = random.uniform(speed*-1,speed)
         # self.sickDay = 0
         # self.recover_probability = 0.4
         # self.
@@ -58,16 +60,16 @@ class participant:
         self.y += self.yspeed
         if self.x>self.width:
             self.x = self.width
-            self.xspeed = random.uniform(-10,10)
+            self.xspeed = random.uniform(speed*-1,speed)
         if self.x<0:
             self.x = 0
-            self.xspeed = random.uniform(-10,10)
+            self.xspeed = random.uniform(speed*-1,speed)
         if self.y>self.height:
             self.y=self.height
-            self.yspeed = random.uniform(-10,10)
+            self.yspeed = random.uniform(speed*-1,speed)
         if self.y<0:
             self.y=0
-            self.yspeed = random.uniform(-10,10)
+            self.yspeed = random.uniform(speed*-1,speed)
             
 for x in range(participants-1):
     collectionOfParticipants.append(participant(width, height))
@@ -77,6 +79,10 @@ sickPerson.status = 1
 collectionOfParticipants.append(sickPerson)
 
 sickBoolean = True
+healthList = []
+sickList = []
+recoverList = []
+deathList = []
 
 while sickBoolean:
     collectionOfSick = []
@@ -109,10 +115,19 @@ while sickBoolean:
 
     for x in collectionOfParticipants:
         count[x.status] +=1
-    
+    healthList.append(count[0])
+    sickList.append(count[1])
+    recoverList.append(count[3])
+    deathList.append(count[4])
     print(count)
     if count[1] == 0:
         sickBoolean = False
+
+plt.plot(sickList,'r')
+plt.plot(healthList,'b')
+plt.plot(deathList,'black')
+plt.plot(recoverList,'yellow')
+plt.savefig('simulation.jpeg')
 
 
         
